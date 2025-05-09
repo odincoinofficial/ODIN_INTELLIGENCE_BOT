@@ -2,6 +2,7 @@ from aiogram import Bot, Dispatcher, executor, types
 import os
 from dotenv import load_dotenv
 from modules import osint_tools
+from modules.pdf_generator import generate_pdf_report
 
 load_dotenv()
 API_TOKEN = os.getenv("BOT_TOKEN")
@@ -12,77 +13,24 @@ dp = Dispatcher(bot)
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
     await message.reply(
-        "OSINT Bot Activated. Available commands:\n/email /ip /user /domain /phone /tgid /darknet /report"
+        "ODIN Bot Activated. Use /email /ip /domain /user /phone /tgid /darknet /report /pdfreport"
     )
 
-@dp.message_handler(commands=['email'])
-async def email_handler(message: types.Message):
+@dp.message_handler(commands=['pdfreport'])
+async def pdfreport_handler(message: types.Message):
     parts = message.text.split()
     if len(parts) != 2:
-        await message.reply("Usage: /email someone@example.com")
+        await message.reply("Usage: /pdfreport target@example.com")
         return
-    result = osint_tools.lookup_email(parts[1])
-    await message.reply(result)
+    query = parts[1]
+    email = osint_tools.lookup_email(query)
+    ip = osint_tools.lookup_ip(query)
+    domain = osint_tools.lookup_domain(query)
+    user = osint_tools.lookup_username(query)
 
-@dp.message_handler(commands=['ip'])
-async def ip_handler(message: types.Message):
-    parts = message.text.split()
-    if len(parts) != 2:
-        await message.reply("Usage: /ip 1.2.3.4")
-        return
-    result = osint_tools.lookup_ip(parts[1])
-    await message.reply(result)
-
-@dp.message_handler(commands=['user'])
-async def user_handler(message: types.Message):
-    parts = message.text.split()
-    if len(parts) != 2:
-        await message.reply("Usage: /user username")
-        return
-    result = osint_tools.lookup_username(parts[1])
-    await message.reply(result)
-
-@dp.message_handler(commands=['domain'])
-async def domain_handler(message: types.Message):
-    parts = message.text.split()
-    if len(parts) != 2:
-        await message.reply("Usage: /domain example.com")
-        return
-    result = osint_tools.lookup_domain(parts[1])
-    await message.reply(result)
-
-@dp.message_handler(commands=['phone'])
-async def phone_handler(message: types.Message):
-    parts = message.text.split()
-    if len(parts) != 2:
-        await message.reply("Usage: /phone +123456789")
-        return
-    result = osint_tools.lookup_phone(parts[1])
-    await message.reply(result)
-
-@dp.message_handler(commands=['tgid'])
-async def tgid_handler(message: types.Message):
-    user = message.from_user
-    result = osint_tools.lookup_telegram_id(user.id)
-    await message.reply(result)
-
-@dp.message_handler(commands=['darknet'])
-async def darknet_handler(message: types.Message):
-    parts = message.text.split()
-    if len(parts) != 2:
-        await message.reply("Usage: /darknet keyword")
-        return
-    result = osint_tools.lookup_darknet(parts[1])
-    await message.reply(result)
-
-@dp.message_handler(commands=['report'])
-async def report_handler(message: types.Message):
-    parts = message.text.split()
-    if len(parts) != 2:
-        await message.reply("Usage: /report target")
-        return
-    result = osint_tools.generate_report(parts[1])
-    await message.reply(result)
+    filename = generate_pdf_report(query, email, ip, domain, user)
+    with open(filename, "rb") as doc:
+        await message.reply_document(doc)
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
