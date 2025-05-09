@@ -4,16 +4,12 @@ from dotenv import load_dotenv
 from modules import osint_tools
 
 load_dotenv()
-API_TOKEN = os.getenv("BOT_TOKEN")
-
-bot = Bot(token=API_TOKEN)
+bot = Bot(token=os.getenv("BOT_TOKEN"))
 dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
-    await message.reply(
-        "OSINT Bot Activated. Available commands: /email, /ip, /user, /domain"
-    )
+    await message.reply("OSINT Bot Activated. Available commands: /email, /ip, /user, /domain")
 
 @dp.message_handler(commands=['email'])
 async def email_handler(message: types.Message):
