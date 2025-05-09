@@ -1,5 +1,5 @@
 aiogram==2.25.1
 python-dotenv
 requests
-fpdf==1.7.2
-aiohttp==3.8.1
+fpdf
+aiohttp
