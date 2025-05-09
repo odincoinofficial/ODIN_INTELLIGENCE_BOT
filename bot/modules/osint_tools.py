@@ -54,10 +54,7 @@ def lookup_telegram_id(user_id):
     return f"Telegram ID: {user_id} — no extra public data via Bot API."
 
 def lookup_social(username):
-    return f"Suggested search:
-- https://namecheckup.com/user/{username}
-- https://github.com/{username}
-- https://t.me/{username}"
+    return f"Suggested search:\\nhttps://github.com/{username}\\nhttps://namecheckup.com/user/{username}\\nhttps://t.me/{username}"
 
 def lookup_darknet(keyword):
     return f"Simulated darknet lookup for: {keyword}. Full darknet scanning requires proxy and TOR network."
