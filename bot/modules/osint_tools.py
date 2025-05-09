@@ -20,24 +20,6 @@ def lookup_ip(ip):
     except Exception as e:
         return f"Error: {e}"
 
-def lookup_phone(phone):
-    return f"Phone lookup for: {phone} (stub or API here)"
-
-def lookup_telegram_id(user_id):
-    return f"Telegram ID: {user_id} — limited public data"
-
-def lookup_darknet(keyword):
-    return f"Simulated darknet search for: {keyword}"
-
-def generate_report(query):
-    return (
-        f"Report for {query}\\n"
-        f"{lookup_email(query)}\\n"
-        f"{lookup_ip(query)}\\n"
-        f"{lookup_domain(query)}\\n"
-        f"{lookup_username(query)}"
-    )
-
 def lookup_username(username):
     return f"Username lookup for: {username} (stub)"
 
@@ -50,5 +32,20 @@ def lookup_domain(domain):
     except Exception as e:
         return f"Error: {e}"
 
-def lookup_social(username):
-    return f"Suggested search:\nhttps://github.com/{username}\nhttps://namecheckup.com/user/{username}\nhttps://t.me/{username}"
+def lookup_phone(phone):
+    return f"Phone lookup for: {phone} (stub or API integration)"
+
+def lookup_telegram_id(user_id):
+    return f"Telegram ID: {user_id} — public lookup not available via Bot API"
+
+def lookup_darknet(keyword):
+    return f"Simulated darknet search for: {keyword}"
+
+def generate_report(query):
+    return (
+        f"Report for {query}\n"
+        f"{lookup_email(query)}\n"
+        f"{lookup_ip(query)}\n"
+        f"{lookup_domain(query)}\n"
+        f"{lookup_username(query)}"
+    )
