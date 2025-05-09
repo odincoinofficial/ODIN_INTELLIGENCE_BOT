@@ -23,6 +23,38 @@ async def email_handler(message: types.Message):
         return
     result = osint_tools.lookup_email(parts[1])
     await message.reply(result)
+@dp.message_handler(commands=['phone'])
+async def phone_handler(message: types.Message):
+    parts = message.text.split()
+    if len(parts) != 2:
+        await message.reply("Usage: /phone +123456789")
+        return
+    result = osint_tools.lookup_phone(parts[1])
+    await message.reply(result)
+
+@dp.message_handler(commands=['tgid'])
+async def tgid_handler(message: types.Message):
+    user = message.from_user
+    result = osint_tools.lookup_telegram_id(user.id)
+    await message.reply(result)
+
+@dp.message_handler(commands=['darknet'])
+async def darknet_handler(message: types.Message):
+    parts = message.text.split()
+    if len(parts) != 2:
+        await message.reply("Usage: /darknet keyword")
+        return
+    result = osint_tools.lookup_darknet(parts[1])
+    await message.reply(result)
+
+@dp.message_handler(commands=['report'])
+async def report_handler(message: types.Message):
+    parts = message.text.split()
+    if len(parts) != 2:
+        await message.reply("Usage: /report target")
+        return
+    result = osint_tools.generate_report(parts[1])
+    await message.reply(result)
 
 @dp.message_handler(commands=['ip'])
 async def ip_handler(message: types.Message):
