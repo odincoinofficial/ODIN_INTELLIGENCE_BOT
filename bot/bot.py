@@ -14,9 +14,9 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
-    user = message.from_user
-logging.info(f"Command: {message.text} | User: {user.id} | Name: {user.first_name} {user.last_name} | Username: @{user.username} | Lang: {user.language_code}")
-    await message.reply("OSINT Bot Activated. Available commands: /email, /ip, /user, /domain")
+    await message.reply(
+        "OSINT Bot Activated. Available commands: /email, /ip, /user, /domain"
+    )
 
 @dp.message_handler(commands=['email'])
 async def email_handler(message: types.Message):
